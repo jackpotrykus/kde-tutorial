@@ -3,7 +3,7 @@ library(purrr)
 library(magick)
 set.seed(353535)
 
-# === BART SIMPON DENSITY ===
+# === BART SIMPSON DENSITY ===
 # http://www.math.yorku.ca/~hkj/Teaching/4230/Coverage/density.R
 dbart <- function(x) {
     d1 <- dnorm(x, 0, 1)
@@ -27,7 +27,7 @@ rbart <- function(n) {
 }
 
 
-# === DENSITY ESIMATION
+# === DENSITY ESIMATION ===
 # Gaussian kernel
 k <- function(x) return(dnorm(x))
 
@@ -90,15 +90,15 @@ gamma_density_estimate <- kde(gamma_data, gamma_optimal_bandwidth)
 bart_data <- rbart(250)
 bart_data <- sort(bart_data)
 bart_x_axis <- seq(from = -3, to = 3, length = 250)
-bart_test_bandwidths <- seq(from = 0.01, to = 0.30, length = 250)
+bart_test_bandwidths <- seq(from = 0.01, to = 0.20, length = 250)
 bart_loocv_scores <- loocv(bart_data, bart_test_bandwidths)
 bart_optimal_bandwidth <- optimal_h(bart_loocv_scores, bart_test_bandwidths)
 bart_density_estimate <- kde(bart_data, bart_optimal_bandwidth)
 
 png("./png/gamma_loocv.png")
-plot(gamma_test_bandwidths, gamma_loocv_scores, pch = "•", cex = 1, col = "orange",
-xlab = TeX("Value of $h$"), ylab = TeX("LOOCV Score"),
-main = TeX("LOOCV Score as a Function of $h$"))
+plot(gamma_test_bandwidths, gamma_loocv_scores, pch = "•", cex = 1, 
+     col = "orange", xlab = TeX("$h$"), ylab = TeX("LOOCV Score"),
+     main = TeX("LOOCV Score as a Function of $h$"))
 abline(v = gamma_optimal_bandwidth, lwd = 3, col = "red")
 dev.off()
 
@@ -106,14 +106,14 @@ png("./png/gamma_kde.png")
 plot(gamma_data, gamma_density_estimate, type = "l", col = "darkgreen", lwd = 3,
      xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
      main = paste("Density Estimate: h =", signif(gamma_optimal_bandwidth)),
-    ylim = c(0, 0.3))
+     ylim = c(0, 0.3))
 lines(gamma_x_axis, dgamma(gamma_x_axis, 3, 1), col = "blue", lty = 3, lwd = 2)
 dev.off()
 
 png("./png/bart_loocv.png")
 plot(bart_test_bandwidths, bart_loocv_scores, pch = "•", cex = 1, 
-     col = "orange", xlab = TeX("Value of $h$"), ylab = TeX("LOOCV Score"),
-    main = TeX("LOOCV Score as a Function of $h$"))
+     col = "orange", xlab = TeX("$h$"), ylab = TeX("LOOCV Score"),
+     main = TeX("LOOCV Score as a Function of $h$"))
 abline(v = bart_optimal_bandwidth, lwd = 3, col = "red")
 dev.off()
 
@@ -121,25 +121,75 @@ png("./png/bart_kde.png")
 plot(bart_data, bart_density_estimate, type = "l", col = "darkgreen", lwd = 3,
      xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
      main = paste("Density Estimate: h =", signif(bart_optimal_bandwidth)),
-    ylim = c(0, 0.7))
+     ylim = c(0, 0.7))
 lines(bart_x_axis, dbart(bart_x_axis), col = "blue", lty = 3, lwd = 2)
 dev.off()
 
+
 # === MAKE GIF ===
 frame_num <- 0
-bart_gif <- function() {
+gamma_gif <- function(delay) {
+    for (h in gamma_test_bandwidths) {
+        if (h == gamma_optimal_bandwidth) {
+            for (i in 1:100) {
+                if (frame_num < 10) {
+                    png(paste("./png/gamma/kde_000", frame_num, ".png", 
+                              sep = ""))
+                } else if (frame_num < 100) {
+                    png(paste("./png/gamma/kde_00", frame_num, ".png", 
+                              sep = ""))
+                } else {
+                    png(paste("./png/gamma/kde_0", frame_num, ".png", 
+                              sep = ""))
+                }
+                plot(gamma_data, kde(gamma_data, h), type = "l", 
+                     col = "darkgreen", lwd = 3, xlab = "x", 
+                     ylab = TeX("$\\widehat{f}(x)"),
+                     main = paste("Density Estimate: h =", signif(h)),
+                     ylim = c(0, 0.3))
+                lines(gamma_x_axis, dgamma(gamma_x_axis, 3, 1), col = "blue", 
+                      lty = 3, lwd = 2)
+                dev.off()
+                frame_num <- frame_num + 1
+            }
+        } else {
+            if (frame_num < 10) {
+                png(paste("./png/gamma/kde_000", frame_num, ".png", sep = ""))
+            } else if (frame_num < 100) {
+                png(paste("./png/gamma/kde_00", frame_num, ".png", sep = ""))
+            } else {
+                png(paste("./png/gamma/kde_0", frame_num, ".png", sep = ""))
+            }
+            plot(gamma_data, kde(gamma_data, h), type = "l", col = "red", 
+                 lwd = 3, xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
+                 main = paste("Density Estimate: h =", signif(h)),
+                 ylim = c(0, 0.3))
+            lines(gamma_x_axis, dgamma(gamma_x_axis, 3, 1), col = "blue", 
+                  lty = 3, lwd = 2)
+            dev.off()
+            frame_num <- frame_num + 1
+        }
+    }
+    system(paste("convert -delay ", delay, 
+                 " ./png/gamma/*.png -loop 0 ./png/gamma.gif", sep = ""))
+}
+
+
+bart_gif <- function(delay) {
     for (h in bart_test_bandwidths) {
         if (h == bart_optimal_bandwidth) {
             for (i in 1:100) {
                 if (frame_num < 10) {
-                    png(paste("./png/bart/kde_000", frame_num, ".png", sep = ""))
+                    png(paste("./png/bart/kde_000", frame_num, ".png", 
+                              sep = ""))
                 } else if (frame_num < 100) {
                     png(paste("./png/bart/kde_00", frame_num, ".png", sep = ""))
                 } else {
                     png(paste("./png/bart/kde_0", frame_num, ".png", sep = ""))
                 }
-                plot(bart_data, kde(bart_data, h), type = "l", col = "darkgreen",
-                     lwd = 3, xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
+                plot(bart_data, kde(bart_data, h), type = "l", 
+                     col = "darkgreen", lwd = 3, xlab = "x", 
+                     ylab = TeX("$\\widehat{f}(x)"),
                      main = paste("Density Estimate: h =", signif(h)),
                      ylim = c(0, 0.7))
                 lines(bart_x_axis, dbart(bart_x_axis), col = "blue", lty = 3, 
@@ -155,59 +205,20 @@ bart_gif <- function() {
             } else {
                 png(paste("./png/bart/kde_0", frame_num, ".png", sep = ""))
             }
-            plot(bart_data, kde(bart_data, h), type = "l", col = "red", lwd = 3,
-                 xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
+            plot(bart_data, kde(bart_data, h), type = "l", col = "red", 
+                 lwd = 3, xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
                  main = paste("Density Estimate: h =", signif(h)),
                  ylim = c(0, 0.7))
-            lines(bart_x_axis, dbart(bart_x_axis), col = "blue", lty = 3, lwd = 2)
+            lines(bart_x_axis, dbart(bart_x_axis), col = "blue", lty = 3, 
+                  lwd = 2)
             dev.off()
             frame_num <- frame_num + 1
         }
     }
-    system("convert -delay 3 ./png/bart/*.png -loop 0 ./png/bart.gif")
+    system(paste("convert -delay ", delay, 
+                 " ./png/bart/*.png -loop 0 ./png/bart.gif", sep = ""))
 }
 
 
-gamma_gif <- function() {
-    for (h in gamma_test_bandwidths) {
-        if (h == gamma_optimal_bandwidth) {
-            for (i in 1:100) {
-                if (frame_num < 10) {
-                    png(paste("./png/gamma/kde_000", frame_num, ".png", sep = ""))
-                } else if (frame_num < 100) {
-                    png(paste("./png/gamma/kde_00", frame_num, ".png", sep = ""))
-                } else {
-                    png(paste("./png/gamma/kde_0", frame_num, ".png", sep = ""))
-                }
-                plot(gamma_data, kde(gamma_data, h), type = "l", col = "darkgreen",
-                     lwd = 3, xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
-                     main = paste("Density Estimate: h =", signif(h)),
-                     ylim = c(0, 0.3))
-                lines(gamma_x_axis, dgamma(gamma_x_axis, 3, 1), col = "blue", lty = 3, 
-                      lwd = 2)
-                dev.off()
-                frame_num <- frame_num + 1
-            }
-        } else {
-            if (frame_num < 10) {
-                png(paste("./png/gamma/kde_000", frame_num, ".png", sep = ""))
-            } else if (frame_num < 100) {
-                png(paste("./png/gamma/kde_00", frame_num, ".png", sep = ""))
-            } else {
-                png(paste("./png/gamma/kde_0", frame_num, ".png", sep = ""))
-            }
-            plot(gamma_data, kde(gamma_data, h), type = "l", col = "red", lwd = 3,
-                 xlab = "x", ylab = TeX("$\\widehat{f}(x)"),
-                 main = paste("Density Estimate: h =", signif(h)),
-                 ylim = c(0, 0.3))
-            lines(gamma_x_axis, dgamma(gamma_x_axis, 3, 1), col = "blue", lty = 3, lwd = 2)
-            dev.off()
-            frame_num <- frame_num + 1
-        }
-    }
-    system("convert -delay 3 ./png/gamma/*.png -loop 0 ./png/gamma.gif")
-}
-
-
-bart_gif()
-gamma_gif()
+gamma_gif(4)
+bart_gif(4)
