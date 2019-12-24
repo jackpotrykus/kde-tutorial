@@ -1,5 +1,4 @@
 library(latex2exp)
-library(purrr)
 library(magick)
 set.seed(353535)
 
@@ -82,8 +81,7 @@ kde <- function(xs, h) {
 gamma_data <- rgamma(250, 3, 1)
 gamma_data <- sort(gamma_data)
 gamma_x_axis <- seq(from = min(gamma_data), to = max(gamma_data), length = 250)
-gamma_test_bandwidths <- seq(from = 0.10, to = 0.90, length = 250)
-gamma_loocv_scores <- loocv(gamma_data, gamma_test_bandwidths)
+gamma_test_bandwidths <- seq(from = 0.10, to = 0.90, length = 250) gamma_loocv_scores <- loocv(gamma_data, gamma_test_bandwidths)
 gamma_optimal_bandwidth <- optimal_h(gamma_loocv_scores, gamma_test_bandwidths)
 gamma_density_estimate <- kde(gamma_data, gamma_optimal_bandwidth)
 
