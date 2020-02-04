@@ -1,0 +1,27 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{loocv} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{,} \PYG{n}{hs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{\PYGZsh{} calculate the leave\PYGZhy{}one\PYGZhy{}out cross\PYGZhy{}validation score for various bandwidths}
+    \PYG{n}{n} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{)}
+    \PYG{n}{scores} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{vector}\PYG{p}{()}
+    \PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{h} \PYG{n}{in} \PYG{n}{hs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{score} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{l+m}{0}
+        \PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{xi} \PYG{n}{in} \PYG{n}{xs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{xj} \PYG{n}{in} \PYG{n}{xs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{score} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{score} \PYG{o}{+} \PYG{n+nf}{dnorm}\PYG{p}{((}\PYG{n}{xi}\PYG{o}{\PYGZhy{}}\PYG{n}{xj}\PYG{p}{)}\PYG{o}{/}\PYG{n}{h}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{,} \PYG{n+nf}{sqrt}\PYG{p}{(}\PYG{l+m}{2}\PYG{p}{))} \PYG{o}{\PYGZhy{}} \PYG{l+m}{2} \PYG{o}{*} \PYG{n+nf}{k}\PYG{p}{((}\PYG{n}{xi}\PYG{o}{\PYGZhy{}}\PYG{n}{xj}\PYG{p}{)}\PYG{o}{/}\PYG{n}{h}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{score} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{score} \PYG{o}{/} \PYG{p}{(}\PYG{n}{h} \PYG{o}{*} \PYG{n}{n\PYGZca{}2}\PYG{p}{)}
+        \PYG{n}{score} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{score} \PYG{o}{+} \PYG{l+m}{2} \PYG{o}{*} \PYG{n+nf}{k}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)} \PYG{o}{/} \PYG{p}{(}\PYG{n}{n} \PYG{o}{*} \PYG{n}{h}\PYG{p}{)}
+        \PYG{n}{scores} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{c}\PYG{p}{(}\PYG{n}{scores}\PYG{p}{,} \PYG{n}{score}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n+nf}{return}\PYG{p}{(}\PYG{n}{scores}\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{optimal\PYGZus{}h} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{loocv\PYGZus{}scores}\PYG{p}{,} \PYG{n}{hs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{\PYGZsh{} determine the bandwidth which corresponds to minimum loocv score}
+    \PYG{n}{min\PYGZus{}cv} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{min}\PYG{p}{(}\PYG{n}{loocv\PYGZus{}scores}\PYG{p}{)}
+    \PYG{n}{indexes} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{which}\PYG{p}{(}\PYG{n}{loocv\PYGZus{}scores} \PYG{o}{\PYGZpc{}in\PYGZpc{}} \PYG{n}{min\PYGZus{}cv}\PYG{p}{)}
+    \PYG{n}{index} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{min}\PYG{p}{(}\PYG{n}{indexes}\PYG{p}{)}
+    \PYG{n+nf}{return}\PYG{p}{(}\PYG{n}{hs[index]}\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

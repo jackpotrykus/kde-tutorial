@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{kde} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{,} \PYG{n}{h}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{\PYGZsh{} produce estimates of the density at all values of x}
+    \PYG{n}{vals} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{vector}\PYG{p}{()}
+    \PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{x} \PYG{n}{in} \PYG{n}{xs}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{vals} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{c}\PYG{p}{(}\PYG{n}{vals}\PYG{p}{,} \PYG{n+nf}{fhat}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{xs}\PYG{p}{,} \PYG{n}{h}\PYG{p}{))}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n+nf}{return}\PYG{p}{(}\PYG{n}{vals}\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

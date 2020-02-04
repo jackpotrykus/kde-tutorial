@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{fhat} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{xs}\PYG{p}{,} \PYG{n}{h}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{\PYGZsh{} estimate the density at point x}
+    \PYG{n}{n} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{xs}\PYG{p}{)}
+    \PYG{n+nf}{return}\PYG{p}{(}\PYG{n+nf}{sum}\PYG{p}{(}\PYG{n+nf}{k}\PYG{p}{(((}\PYG{n}{x} \PYG{o}{\PYGZhy{}} \PYG{n}{xs}\PYG{p}{)} \PYG{o}{/} \PYG{n}{h}\PYG{p}{)))} \PYG{o}{/} \PYG{p}{(}\PYG{n}{n} \PYG{o}{*} \PYG{n}{h}\PYG{p}{))}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
