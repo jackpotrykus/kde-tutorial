@@ -1,3 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{k} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{n+nf}{return}\PYG{p}{(}\PYG{n+nf}{dnorm}\PYG{p}{(}\PYG{n}{x}\PYG{p}{))} \PYG{c+c1}{\PYGZsh{} gaussian kernel}
-\end{Verbatim}
