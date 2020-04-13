@@ -1,7 +1,7 @@
 library(latex2exp)
 set.seed(353535)
 
-# bart sampsion density
+# bart simpson density
 # http://www.math.yorku.ca/~hkj/Teaching/4230/Coverage/density.R
 dbart <- function(x) {
     d1 <- dnorm(x, 0, 1)
